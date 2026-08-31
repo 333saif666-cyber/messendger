@@ -8,18 +8,19 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: kivy/buildozer:latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-    - name: Build with Buildozer Action
-      uses: ArsenStrikers/buildozer-action@v1
-      with:
-        workdir: .
-        buildozer_version: master
+    - name: Build APK with Buildozer
+      run: |
+        yes | buildozer -v android debug
 
-    - name: Upload APK Artifact
+    - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: app-debug
-        path: bin/*.apk
+        name: git-messenger-apk
+        path: bin/
